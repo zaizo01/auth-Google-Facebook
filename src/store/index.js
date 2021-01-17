@@ -22,7 +22,7 @@ export default new Vuex.Store({
     async setUser({commit}, user){
 
       try {
-          const doc = db.collection('users').doc(user.uid).get()
+          const doc = await db.collection('users').doc(user.uid).get()
           if (doc.exists) {
             commit('newUser', doc.data())
           } else {

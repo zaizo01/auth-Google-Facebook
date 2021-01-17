@@ -55,6 +55,7 @@ export default {
     methods: {
         searhImg(event){
             console.log(event.target.files[0]);
+
             const typeFiles = event.target.files[0].type;
             if (typeFiles === 'image/jpeg' || typeFiles === 'image/png') {
                 
@@ -74,13 +75,18 @@ export default {
         },
         async submitImg(){
             try {
+
                 this.loading = true;
+
                 const refImage = storage.ref().child(this.user.email).child('profile photo');
+
                 const resp = await refImage.put(this.file);
 
                 console.log(resp);
+
                 const urlDownload = await refImage.getDownloadURL();
                 this.user.photo = urlDownload;
+                
                 await db.collection('users').doc(this.user.uid).update({
                     photo: urlDownload
                 })
