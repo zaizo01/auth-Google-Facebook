@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapMutations} from 'vuex'
+import { mapActions, mapMutations} from 'vuex'
 import { firebase, auth, db } from '@/firebase';
 import router from '@/router';
 export default {
@@ -39,6 +39,7 @@ export default {
     },
     methods: {
         ...mapMutations(['newUser']),
+        ...mapActions(['setUser']),
         googleAuth(){
             const provider = new firebase.auth.GoogleAuthProvider();
             this.loginWithSocialNetWork(provider);
@@ -54,20 +55,8 @@ export default {
             try {
                 const result = await firebase.auth().signInWithPopup(provider);
                 const user = result.user;
-
-                const userInfo = {
-                    name: user.displayName,
-                    email: user.email,
-                    uid: user.uid,
-                    photo: user.photoURL
-                }
-                this.newUser(userInfo);
-
-                await  db.collection('users').doc(user.uid).set(
-                    userInfo
-                )
-
-                console.log('User authenticared in DB');
+                this.setUser(user);
+               
                 router.push({name: 'Home'})
 
             } catch (error) {

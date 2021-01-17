@@ -1,28 +1,51 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { auth } from '@/firebase'
+import { auth, db } from '@/firebase'
 import router from '@/router';
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    user: {}
+    user: ''
   },
   mutations: {
     newUser(state, payload){
-      state.user = payload;
+      if (payload === null) {
+        state.user = ''
+      } else {
+        state.user = payload;
+      }
     }
   },
   actions: {
-    setUser({commit}, user){
-        const userInfo = {
-          name: user.displayName,
-          email: user.email,
-          uid: user.uid,
-          photo: user.photoURL
+    async setUser({commit}, user){
+
+      try {
+          const doc = db.collection('users').doc(user.uid).get()
+          if (doc.exists) {
+            commit('newUser', doc.data())
+          } else {
+
+            const userInfo = {
+              name: user.displayName,
+              email: user.email,
+              uid: user.uid,
+              photo: user.photoURL
+          }
+            await  db.collection('users').doc(user.uid).set(
+              userInfo
+          )
+
+          console.log('User authenticared in DB');
+          commit('newUser', userInfo);
+          }
+
+      } catch (error) {
+        console.log(error);
       }
-      commit('newUser', userInfo);
+
+        
     },
     closeSession({commit}){
       auth.signOut();
