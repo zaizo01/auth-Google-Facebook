@@ -7,7 +7,9 @@ import '@babel/polyfill'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import { auth } from '@/firebase'
+import VueChatScroll from 'vue-chat-scroll'
 
+Vue.use(VueChatScroll)
 Vue.config.productionTip = false
 
 auth.onAuthStateChanged(function(user) {

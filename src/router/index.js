@@ -23,6 +23,12 @@ const routes = [
     component: () => import('../views/Admin.vue'),
     meta: { requiresAuth: true }
   },
+  {
+    path: '/chat',
+    name: 'Chat',
+    component: () => import('../views/Chat.vue'),
+    meta: { requiresAuth: true }
+  },
 ]
 
 const router = new VueRouter({

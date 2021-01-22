@@ -55,6 +55,17 @@
                     </router-link>
                 </v-list-item-content>
               </v-list-item>
+
+            <v-list-item>
+                <v-list-item-icon>
+                    <v-icon dark>fas fa-address-card</v-icon>
+                </v-list-item-icon>
+                 <v-list-item-content>
+                    <router-link to="/chat">
+                        <v-list-item-title class="white--text">Chat Web</v-list-item-title>
+                    </router-link>
+                </v-list-item-content>
+              </v-list-item>
         </v-list>
     </v-navigation-drawer>
     </div>
